@@ -5,10 +5,10 @@ const jwt = require('jsonwebtoken');
 const db = require('./database');
 
 const app = express();
-const PORT = 3001;
-const JWT_SECRET = 'avalia_ninho_secret_2024';
+const PORT = process.env.PORT || 3001;
+const JWT_SECRET = process.env.JWT_SECRET || 'avalia_ninho_secret_2024';
 
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // Auth middleware

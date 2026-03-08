@@ -28,6 +28,7 @@ export default function Search() {
   const navigate = useNavigate()
   const residence = localStorage.getItem('residence') || ''
   const token = localStorage.getItem('token')
+  const API = import.meta.env.VITE_API_URL || ''
   const headers = { Authorization: `Bearer ${token}` }
 
   const [query, setQuery] = useState('')
@@ -46,7 +47,7 @@ export default function Search() {
   async function loadAllProviders() {
     setAllLoading(true)
     try {
-      const res = await axios.get('/api/providers', { headers })
+      const res = await axios.get(`${API}/api/providers`, { headers })
       setAllProviders(res.data)
     } catch {
       // ignore
@@ -65,7 +66,7 @@ export default function Search() {
     debounceRef.current = setTimeout(async () => {
       setLoading(true)
       try {
-        const res = await axios.get(`/api/providers/search?q=${encodeURIComponent(query)}`, { headers })
+        const res = await axios.get(`${API}/api/providers/search?q=${encodeURIComponent(query)}`, { headers })
         setProviders(res.data)
       } catch {
         // ignore
@@ -87,11 +88,11 @@ export default function Search() {
     setAddLoading(true)
     try {
       const rawPhone = newPhone.replace(/\D/g, '')
-      await axios.post('/api/providers', { name: newName, phone: rawPhone, specialty: newSpecialty }, { headers })
+      await axios.post(`${API}/api/providers`, { name: newName, phone: rawPhone, specialty: newSpecialty }, { headers })
       setShowAddModal(false)
       setNewName(''); setNewPhone(''); setNewSpecialty('')
       if (query.trim()) {
-        const res = await axios.get(`/api/providers/search?q=${encodeURIComponent(query)}`, { headers })
+        const res = await axios.get(`${API}/api/providers/search?q=${encodeURIComponent(query)}`, { headers })
         setProviders(res.data)
       }
     } catch (err: unknown) {
@@ -105,7 +106,7 @@ export default function Search() {
   async function refreshSearch() {
     await loadAllProviders()
     if (!query.trim()) return
-    const res = await axios.get(`/api/providers/search?q=${encodeURIComponent(query)}`, { headers })
+    const res = await axios.get(`${API}/api/providers/search?q=${encodeURIComponent(query)}`, { headers })
     setProviders(res.data)
   }
 

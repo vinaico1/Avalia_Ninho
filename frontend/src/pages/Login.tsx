@@ -17,13 +17,15 @@ export default function Login() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const API = import.meta.env.VITE_API_URL || ''
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
     setLoading(true)
     try {
       const rawPhone = phone.replace(/\D/g, '')
-      const res = await axios.post('/api/auth/login', { phone: rawPhone, residence, password })
+      const res = await axios.post(`${API}/api/auth/login`, { phone: rawPhone, residence, password })
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('residence', res.data.residence)
       navigate('/search')

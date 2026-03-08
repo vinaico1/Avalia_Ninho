@@ -35,13 +35,14 @@ export default function ProviderCard({ provider, onEvaluated, myEvalStars }: Pro
 
   const token = localStorage.getItem('token')
   const headers = { Authorization: `Bearer ${token}` }
+  const API = import.meta.env.VITE_API_URL || ''
 
   async function loadDetails() {
     if (loaded) return
     setLoaded(true)
     const [detailRes, myRes] = await Promise.all([
-      axios.get(`/api/providers/${provider.id}`, { headers }),
-      axios.get(`/api/providers/${provider.id}/my-evaluation`, { headers })
+      axios.get(`${API}/api/providers/${provider.id}`, { headers }),
+      axios.get(`${API}/api/providers/${provider.id}/my-evaluation`, { headers })
     ])
     setReviews(detailRes.data.reviews || [])
     if (myRes.data) {
@@ -60,7 +61,7 @@ export default function ProviderCard({ provider, onEvaluated, myEvalStars }: Pro
     if (!myStars) return
     setSaving(true)
     try {
-      await axios.post('/api/evaluations', { provider_id: provider.id, stars: myStars, comment }, { headers })
+      await axios.post(`${API}/api/evaluations`, { provider_id: provider.id, stars: myStars, comment }, { headers })
       setMyEval({ stars: myStars, comment })
       setLoaded(false)
       await loadDetails()

@@ -24,9 +24,10 @@ export default function Register() {
     if (password !== confirm) { setError('As senhas não coincidem'); return }
     if (password.length < 6) { setError('Senha deve ter pelo menos 6 caracteres'); return }
     setLoading(true)
+    const API = import.meta.env.VITE_API_URL || ''
     try {
       const rawPhone = phone.replace(/\D/g, '')
-      const res = await axios.post('/api/auth/register', { phone: rawPhone, residence, password })
+      const res = await axios.post(`${API}/api/auth/register`, { phone: rawPhone, residence, password })
       localStorage.setItem('token', res.data.token)
       localStorage.setItem('residence', res.data.residence)
       navigate('/search')
