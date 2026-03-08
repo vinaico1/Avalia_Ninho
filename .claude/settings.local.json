@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x /Users/viniciuscoelho/Projetos/AVALIACAO_PRESTADOR/start.sh)",
+      "Bash(npm install)",
+      "Bash(npm show better-sqlite3 versions --json)"
+    ]
+  }
+}
